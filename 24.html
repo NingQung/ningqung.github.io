@@ -26,25 +26,24 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-width: 200px;
             margin: 0;
             overflow-x: hidden;
         }
         .solver-container {
             text-align: center;
-            padding: 20px;
-            width: 90%;
             max-width: 500px;
         }
         .cards-row {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             margin-bottom: 25px;
-            gap: 10px;
         }
         .card-column {
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin: 5px;
         }
         .roller-btn {
             width: 55px;
@@ -86,11 +85,12 @@
             margin-bottom: 25px;
         }
         .option-label {
-          width: 200px;
+          width: 150px;
+          height: 40px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            font-size: 0.8rem;
+            font-size: 1.3rem;
             cursor: pointer;
             padding: 10px;
             background: rgba(255, 255, 255, 0.05);
@@ -138,13 +138,13 @@
         }
         @media screen and (max-width: 400px) {
             .roller-btn, input { width: 55px; }
-            .option-label { font-size: 0.7rem; padding: 5px; }
+            .option-label { font-size: 1rem; padding: 5px; }
         }
     </style>
 </head>
 <body>
     <div class="solver-container">
-        <h2>24&#x9EDE;&#x6C42;&#x89E3;&#x5668;</h2>
+        <h2>24</h2>
         
         <div class="cards-row">
             <div class="card-column">
@@ -171,8 +171,7 @@
 
         <div class="settings-grid">
             <label class="option-label">
-                <span>Floor</span>
-                <input type="checkbox" id="useFloor"> 除法取整
+                <input type="checkbox" id="useFloor"> Floor
             </label>
         </div>
 
@@ -262,8 +261,6 @@
         function handleSolve() {
             const config = {
                 floor: document.getElementById('useFloor').checked,
-                sqrt: document.getElementById('useSqrt').checked,
-                log: document.getElementById('useLog').checked
             };
             const inputs = ['n1', 'n2', 'n3', 'n4'];
             const nums = inputs.map(id => ({
