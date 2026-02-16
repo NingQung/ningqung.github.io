@@ -18,26 +18,34 @@
           --color-6: #D9AE30; /* 激活色 */
           --color-7: #FDF7DE; /* 結果色 */
         }
+        * {
+            box-sizing: border-box;
+        }
         body {
             background-color: var(--color-1);
             color: var(--color-5);
             font-family: "maplemono", sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            min-width: 200px;
             margin: 0;
             overflow-x: hidden;
+            overflow-y: auto;
         }
         .solver-container {
             text-align: center;
+            padding: 20px 10px; /* 縮小左右內距 */
+            width: 100%;       /* 改為 100% 配合 max-width */
             max-width: 500px;
+            margin: auto;      /* 關鍵：在 Flex 下能完美垂直水平置中且安全 */
         }
         .cards-row {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
+            justify-content: center; /* 改用 center 配合 gap */
+            margin-bottom: 30px;
+            gap: 8px;               /* 縮小間距 */
+            width: 100%;
         }
         .card-column {
             display: flex;
@@ -59,18 +67,19 @@
         }
         .roller-btn:active { background: var(--color-6); }
         input {
-            width: 65px;
+            width: 60px;            /* 稍微縮小寬度 */
             height: 75px;
             line-height: 75px;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid transparent;
             color: white;
             text-align: center;
-            font-size: 2rem;
-            margin: 10px 0;
+            font-size: 1.8rem;      /* 稍微縮小字體 */
+            margin: 8px 0;
             border-radius: 8px;
             outline: none;
             transition: all 0.2s;
+            -moz-appearance: textfield;
         }
         input:focus {
             border-color: var(--color-4);
@@ -146,9 +155,12 @@
             min-height: 1.6em;
             word-break: break-all;
         }
-        @media screen and (max-width: 400px) {
-            .roller-btn, input { width: 55px; }
-            .option-label { font-size: 1rem; padding: 5px; }
+        @media screen and (max-width: 360px) {
+            .cards-row { gap: 4px; }
+            input { width: 55px; font-size: 1.5rem; }
+            .roller-btn { width: 50px; }
+            .settings-grid { gap: 5px; }
+            .option-label { padding: 5px; font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -187,7 +199,7 @@
 
         <div class="control-group">
             <button class="clear-btn" onclick="clearAll()">CLEAR</button>
-            <button class="solve-btn" onclick="handleSolve()">SLOVE</button>
+            <button class="solve-btn" onclick="handleSolve()">SOLVE</button>
         </div>
         <div id="result"></div>
     </div>
