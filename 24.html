@@ -112,10 +112,14 @@
 
         .control-group {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             gap: 10px;
+            width: 100%;
         }
         .solve-btn {
             flex: 2;
+            width: 70%;
             padding: 15px;
             background-color: var(--color-3);
             color: var(--color-5);
@@ -128,6 +132,7 @@
         }
         .clear-btn {
             flex: 1;
+            width: 70%;
             padding: 15px;
             background-color: transparent;
             color: var(--color-4);
@@ -181,8 +186,8 @@
         </div>
 
         <div class="control-group">
-            <button class="clear-btn" onclick="clearAll()">&#x6E05;&#x7A7A;</button>
-            <button class="solve-btn" onclick="handleSolve()">&#x6C42;&#x89E3;</button>
+            <button class="clear-btn" onclick="clearAll()">CLEAR</button>
+            <button class="solve-btn" onclick="handleSolve()">SLOVE</button>
         </div>
         <div id="result"></div>
     </div>
