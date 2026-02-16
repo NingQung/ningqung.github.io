@@ -16,7 +16,7 @@ html,body{
 }
 body{
   margin: 0;
-  cursor: none;
+  /* cursor: none; */
 }
 ol{
   list-style: none;
@@ -81,4 +81,5 @@ footer{
   bottom: 0px;
   right: 0;
   color: #b7c7fa;
+  font-family: 'dosis';
 }

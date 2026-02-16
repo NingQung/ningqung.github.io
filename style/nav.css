@@ -36,6 +36,7 @@ nav ol li{
   padding: var(--navli-padding-height) 0 var(--navli-padding-height) 2rem;
   transition: padding 300ms,color 200ms;
   z-index: 2;
+  cursor: pointer;
 }
 nav ol li:hover{
   padding-left: 2.7rem;
