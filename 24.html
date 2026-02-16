@@ -1,66 +1,257 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-tw">
 <head>
     <meta charset="UTF-8">
-    <title>24 Point Solver</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24 Point Solver - Advanced</title>
     <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 50px; background-color: #f4f4f9; }
-        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        input { width: 40px; padding: 10px; margin: 5px; text-align: center; font-size: 1.2rem; }
-        button { padding: 10px 20px; font-size: 1rem; cursor: pointer; background-color: #5b9bd5; color: white; border: none; border-radius: 4px; }
-        button:hover { background-color: #4a86c4; }
-        #result { margin-top: 20px; font-weight: bold; color: #333; min-height: 24px; }
+        @font-face {
+          font-family: "maplemono";
+          src: url("./MapleMono-Regular.ttf");
+        }
+        :root {
+          --color-1: #2A2740; /* 背景 */
+          --color-2: #32378C;
+          --color-3: #434BD9; /* 求解按鈕 */
+          --color-4: #6F76FC; /* 按鈕色 */
+          --color-5: #F0F0FF; /* 文字色 */
+          --color-6: #D9AE30; /* 激活色 */
+          --color-7: #FDF7DE; /* 結果色 */
+        }
+        body {
+            background-color: var(--color-1);
+            color: var(--color-5);
+            font-family: "maplemono", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .solver-container {
+            text-align: center;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+        }
+        .cards-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+        .card-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .roller-btn {
+            width: 55px;
+            height: 40px;
+            background: var(--color-4);
+            border: none;
+            color: var(--color-1);
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            touch-action: manipulation;
+        }
+        .roller-btn:active { background: var(--color-6); }
+        input {
+            width: 65px;
+            height: 75px;
+            line-height: 75px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            color: white;
+            text-align: center;
+            font-size: 2rem;
+            margin: 10px 0;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s;
+        }
+        input:focus {
+            border-color: var(--color-4);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 新增功能開關樣式 */
+        .settings-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .option-label {
+          width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .option-label input { display: none; }
+        .option-label span { margin-bottom: 5px; color: var(--color-5); }
+        .option-label:has(input:checked) {
+            border-color: var(--color-6);
+            background: var(--color-4);
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+        }
+        .solve-btn {
+            flex: 2;
+            padding: 15px;
+            background-color: var(--color-3);
+            color: var(--color-5);
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(67, 75, 217, 0.4);
+        }
+        .clear-btn {
+            flex: 1;
+            padding: 15px;
+            background-color: transparent;
+            color: var(--color-4);
+            border: 2px solid var(--color-4);
+            border-radius: 30px;
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 1.4rem;
+            color: var(--color-7);
+            min-height: 1.6em;
+            word-break: break-all;
+        }
+        @media screen and (max-width: 400px) {
+            .roller-btn, input { width: 55px; }
+            .option-label { font-size: 0.7rem; padding: 5px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="solver-container">
         <h2>24&#x9EDE;&#x6C42;&#x89E3;&#x5668;</h2>
-        <div>
-            <input type="number" id="n1" min="1" max="13" value="1">
-            <input type="number" id="n2" min="1" max="13" value="2">
-            <input type="number" id="n3" min="1" max="13" value="3">
-            <input type="number" id="n4" min="1" max="13" value="4">
+        
+        <div class="cards-row">
+            <div class="card-column">
+                <button class="roller-btn" onclick="changeVal('n1', 1)">+</button>
+                <input type="number" id="n1" value="1" oninput="validateInput(this, 'n2')" onfocus="this.select()">
+                <button class="roller-btn" onclick="changeVal('n1', -1)">-</button>
+            </div>
+            <div class="card-column">
+                <button class="roller-btn" onclick="changeVal('n2', 1)">+</button>
+                <input type="number" id="n2" value="2" oninput="validateInput(this, 'n3')" onfocus="this.select()">
+                <button class="roller-btn" onclick="changeVal('n2', -1)">-</button>
+            </div>
+            <div class="card-column">
+                <button class="roller-btn" onclick="changeVal('n3', 1)">+</button>
+                <input type="number" id="n3" value="3" oninput="validateInput(this, 'n4')" onfocus="this.select()">
+                <button class="roller-btn" onclick="changeVal('n3', -1)">-</button>
+            </div>
+            <div class="card-column">
+                <button class="roller-btn" onclick="changeVal('n4', 1)">+</button>
+                <input type="number" id="n4" value="4" oninput="validateInput(this, null)" onfocus="this.select()">
+                <button class="roller-btn" onclick="changeVal('n4', -1)">-</button>
+            </div>
         </div>
-        <button onclick="handleSolve()">&#x6C42;&#x89E3;</button>
+
+        <div class="settings-grid">
+            <label class="option-label">
+                <span>Floor</span>
+                <input type="checkbox" id="useFloor"> 除法取整
+            </label>
+        </div>
+
+        <div class="control-group">
+            <button class="clear-btn" onclick="clearAll()">&#x6E05;&#x7A7A;</button>
+            <button class="solve-btn" onclick="handleSolve()">&#x6C42;&#x89E3;</button>
+        </div>
         <div id="result"></div>
     </div>
 
     <script>
-        function solve(nums) {
+        function validateInput(el, nextId) {
+            let val = el.value;
+            if (val.length >= 2 && nextId) document.getElementById(nextId).focus();
+            if (val.length >= 2 && val.startsWith('0')) el.value = val.replace(/^0+/, '') || "0";
+            if (el.value && parseInt(el.value) > 13) el.value = 13;
+        }
+
+        function clearAll() {
+            ['n1', 'n2', 'n3', 'n4'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('n1').focus();
+        }
+
+        function changeVal(id, step) {
+            const el = document.getElementById(id);
+            let val = parseInt(el.value || 0) + step;
+            if (val < 1) val = 13; if (val > 13) val = 1;
+            el.value = val;
+        }
+
+        // 改良後的求解演算法，支援開關邏輯
+        function solve(nums, config) {
             if (nums.length === 1) {
-                if (Math.abs(nums[0].val - 24) < 1e-6) {
-                    return nums[0].expr;
-                }
-                return null;
+                return Math.abs(nums[0].val - 24) < 1e-6 ? nums[0].expr : null;
             }
 
+            // 處理一元運算子 (根號/對數)
+            for (let i = 0; i < nums.length; i++) {
+                let n = nums[i];
+                if (n.unaryDepth && n.unaryDepth >= 2) continue; // 限制深度避免死循環
+
+                if (config.sqrt && n.val > 0) {
+                    let next = [...nums];
+                    next[i] = { val: Math.sqrt(n.val), expr: "sqrt(" + n.expr + ")", unaryDepth: (n.unaryDepth || 0) + 1 };
+                    let res = solve(next, config);
+                    if (res) return res;
+                }
+                if (config.log && n.val > 0 && n.val !== 1) {
+                    let next = [...nums];
+                    next[i] = { val: Math.log2(n.val), expr: "log2(" + n.expr + ")", unaryDepth: (n.unaryDepth || 0) + 1 };
+                    let res = solve(next, config);
+                    if (res) return res;
+                }
+            }
+
+            // 處理二元運算子
             for (let i = 0; i < nums.length; i++) {
                 for (let j = 0; j < nums.length; j++) {
                     if (i === j) continue;
-                    
                     let nextNums = [];
                     for (let k = 0; k < nums.length; k++) {
                         if (k !== i && k !== j) nextNums.push(nums[k]);
                     }
-
-                    let a = nums[i];
-                    let b = nums[j];
-
-                    // Addition
-                    let res = solve([...nextNums, {val: a.val + b.val, expr: "(" + a.expr + "+" + b.expr + ")"}]);
-                    if (res) return res;
-
-                    // Subtraction
-                    res = solve([...nextNums, {val: a.val - b.val, expr: "(" + a.expr + "-" + b.expr + ")"}]);
-                    if (res) return res;
-
-                    // Multiplication
-                    res = solve([...nextNums, {val: a.val * b.val, expr: "(" + a.expr + "*" + b.expr + ")"}]);
-                    if (res) return res;
-
-                    // Division
+                    let a = nums[i], b = nums[j];
+                    let combinations = [
+                        { v: a.val + b.val, e: "(" + a.expr + "+" + b.expr + ")" },
+                        { v: a.val - b.val, e: "(" + a.expr + "-" + b.expr + ")" },
+                        { v: a.val * b.val, e: "(" + a.expr + "*" + b.expr + ")" }
+                    ];
+                    
                     if (Math.abs(b.val) > 1e-6) {
-                        res = solve([...nextNums, {val: a.val / b.val, expr: "(" + a.expr + "/" + b.expr + ")"}]);
+                        let divRes = a.val / b.val;
+                        if (config.floor) divRes = Math.floor(divRes); // 除法取整邏輯
+                        combinations.push({ v: divRes, e: "(" + a.expr + "/" + b.expr + ")" });
+                    }
+
+                    for (let comb of combinations) {
+                        let res = solve([...nextNums, { val: comb.v, expr: comb.e, unaryDepth: 0 }], config);
                         if (res) return res;
                     }
                 }
@@ -69,24 +260,34 @@
         }
 
         function handleSolve() {
-            const inputs = [
-                document.getElementById('n1').value,
-                document.getElementById('n2').value,
-                document.getElementById('n3').value,
-                document.getElementById('n4').value
-            ];
-            const nums = inputs.map(n => ({val: parseFloat(n), expr: n}));
-            const solution = solve(nums);
+            const config = {
+                floor: document.getElementById('useFloor').checked,
+                sqrt: document.getElementById('useSqrt').checked,
+                log: document.getElementById('useLog').checked
+            };
+            const inputs = ['n1', 'n2', 'n3', 'n4'];
+            const nums = inputs.map(id => ({
+                val: parseFloat(document.getElementById(id).value) || 0,
+                expr: document.getElementById(id).value || "0",
+                unaryDepth: 0
+            }));
+
             const resultDiv = document.getElementById('result');
+            resultDiv.innerText = "... 運算中 ...";
             
-            if (solution) {
-                // "Result: " in Traditional Chinese: &#x7D50;&#x679C;: 
-                resultDiv.innerHTML = "&#x7D50;&#x679C;: " + solution;
-            } else {
-                // "No solution found" in Traditional Chinese: &#x7121;&#x89E3;
-                resultDiv.innerHTML = "&#x7121;&#x89E3;";
-            }
+            // 使用 setTimeout 避免運算量大時 UI 凍結
+            setTimeout(() => {
+                const solution = solve(nums, config);
+                resultDiv.innerText = solution ? "&#x7D50;&#x679C;: " + solution : "&#x7121;&#x89E3;";
+                resultDiv.innerHTML = resultDiv.innerText;
+            }, 10);
         }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' || e.key.toLowerCase() === 'c') {
+                if (e.key === 'Escape' || document.activeElement.tagName !== 'INPUT') clearAll();
+            }
+        });
     </script>
 </body>
 </html>
