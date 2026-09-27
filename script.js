@@ -1,24 +1,18 @@
 //2023/04/12 還沒整理
 
-const load_screen = document.getElementById("load_screen");
 const main = document.querySelector("main");
 const nav = document.querySelector("nav");
 const nav_li = document.querySelectorAll("nav ol li");
 const nav_nav = document.getElementById("nav_nav");
 const mainSec = document.querySelectorAll("main section");
 const transition_duration = 600;
-var canscroll = false;
+var canscroll = true;
 var mainPos=0;
 
 //#region initialize
-window.onload = () =>{
-  setTimeout(() => {
-    load_screen.className = "loadComplete";
-    canscroll = true;
-  }, 6000);
-  nav_display("home");
-  ms_display(0);
-}
+nav_display("home");
+ms_display(0);
+navtext_display(0);
 //#endregion
 
 window.addEventListener('wheel',e =>{

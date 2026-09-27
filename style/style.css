@@ -1,7 +1,6 @@
 @import url(nav.css);
 @import url(secMain.css);
 @import url(secProfile.css);
-@import url(loading.css);
 
 :root{
   --window-height: 100vh;
@@ -89,3 +88,11 @@ main section#bottom{
   height: var(--bottom-height);
   width: calc(100% - 13vw);
 }
+
+/* Subtle section tints on the dark canvas. */
+main section#home { background-color: #101c18; }
+main section#profile { background-color: #171320; }
+main section#project { background-color: #111a24; }
+main section#dayLog { background-color: #221920; }
+main section#contact { background-color: #211d14; }
+main section#bottom { background-color: #141e20; }
