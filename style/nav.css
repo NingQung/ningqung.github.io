@@ -6,8 +6,8 @@
 nav{
   --navli-padding-height: 3vh;
   --navli-textbox-height: 2rem;
-  --navli-incolor: #00ff90;
-  --navli-notcolor: #bf93f5;
+  --navli-incolor: #315fc6;
+  --navli-notcolor: #b58b35;
   width: calc(5rem);
   height: 100vh;
   padding-left: 3vw;
@@ -28,8 +28,8 @@ nav ol li{
   height: var(--navli-textbox-height);
   font-size: 1rem;
   font-family: 'dosis';
-  color: white;
-  text-shadow: -2px -2px 15px white;
+  color: #183965;
+  text-shadow: -2px -2px 15px #d8eaf5;
   display: flex;
   align-items: center;
   position: relative;
