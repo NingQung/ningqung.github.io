@@ -1,0 +1,29 @@
+/* Personal signature — the wordmark can later be replaced independently. */
+nav { left: clamp(0px, .7vw, 14px); padding-left: clamp(10px, 2vw, 36px); --navli-padding-height: 2.1vh; }
+.signature { display:grid; place-items:center; background:#08090c; color:#eee8d9; overflow:hidden; }
+.signature-air,.signal-field { position:absolute; inset:0; pointer-events:none; }
+.signature-air { overflow:hidden; z-index:-1; }
+.signature-air::before,.signature-air::after {
+  content:""; position:absolute; inset:-24% -14%; transform:rotate(-18deg);
+  background:
+    radial-gradient(ellipse 39% 8% at 64% 54%, #22387568, transparent 99%),
+    radial-gradient(ellipse 33% 17% at 72% 55%, #17234a80, transparent 98%),
+    radial-gradient(ellipse 25% 4.5% at 35% 52%, #1c306655, transparent 99%);
+}
+.signature-air::after { transform:rotate(-24deg); background:radial-gradient(ellipse 23% 2.6% at 72% 58%, #4672c21c, transparent 95%); }
+.signal-field i { position:absolute; left:var(--x); top:var(--y); width:var(--s); height:var(--s); background:#507ce0; opacity:.58; animation:signal-breathe 7s ease-in-out var(--delay) infinite alternate; }
+.signal-field i:nth-child(3n + 1) { background:#d5b475; }
+.signal-field i:nth-child(3) { border:1px solid #6483c8; background:none; }
+@keyframes signal-breathe { from{opacity:.21} to{opacity:.83} }
+.signature-lockup { position:relative; width:max-content; }
+.signature-greeting { margin:0 0 13px .24em; color:#cfc7b8; font-size:clamp(13px,1.2vw,20px); letter-spacing:.35em; }
+.signature h1 { position:relative; margin:0; font:300 clamp(76px,9.8vw,162px)/1.05 "Noto Sans CJK TC","Microsoft JhengHei",sans-serif; letter-spacing:.09em; text-indent:.09em; text-shadow:none; color:#eee8da; }
+.signature h1::after { content:""; position:absolute; right:-21px; top:.09em; width:6px;height:6px; background:#ddbf84; box-shadow:0 0 7px #b48d421e; }
+.signature-caption { margin:24px .3em 0; display:flex; align-items:center; gap:14px; color:#a8a69e; font:10px/1 monospace; letter-spacing:.29em; }
+.signature-caption i { flex:1; height:1px; background:#76726370; }
+.signature-caption small { font:9px monospace; color:#c2ae87; }
+.signature-next { position:absolute; bottom:6%; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:12px; padding:10px; background:none; border:0; color:#c6c1b6; font:11px/1 monospace; letter-spacing:.14em; }
+.signature-next i { width:4px; height:4px; background:#bfa274; }
+.signature-next span { color:#a9badf; }.signature-next:hover{color:#fff2d4}
+@media(max-width:760px){nav{left:0;padding-left:7px;--navli-padding-height:1.7vh}.signature h1{font-size:clamp(59px,16vw,92px)}.signature-air::before{inset:-12% -50%}.signature h1::after{right:-10px;width:4px;height:4px}.signature-caption{margin-top:18px}.signal-field i:nth-child(6){display:none}}
+@media(prefers-reduced-motion:reduce){.signal-field i{animation:none}}
