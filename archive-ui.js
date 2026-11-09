@@ -19,3 +19,38 @@ document.querySelectorAll('[data-entry]').forEach(button => button.addEventListe
 dialog.querySelector('.close').onclick=()=>dialog.close();
 dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
 dialog.addEventListener('wheel',e=>e.stopPropagation());
+
+// One timer services independent cell schedules. No work while away from Home.
+(() => {
+  const field = document.querySelector('.signal-field');
+  const home = field.closest('main');
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const cells = [...field.querySelectorAll('.signal-grid i')].map(el => ({ el, due: 0 }));
+  const random = (min, max) => min + Math.random() * (max - min);
+  let timer, running = false;
+  function tick() {
+    const now = performance.now();
+    for (const cell of cells) {
+      if (now < cell.due) continue;
+      const lit = cell.el.classList.toggle('is-lit');
+      cell.due = now + (lit ? random(180, 420) : random(2200, 12000));
+    }
+    timer = setTimeout(tick, Math.ceil(Math.min(...cells.map(c => c.due)) - now));
+  }
+  function sync() {
+    const enabled = home.classList.contains('in_home') && !document.hidden && !motion.matches;
+    if (enabled === running) return;
+    running = enabled;
+    clearTimeout(timer);
+    const now = performance.now();
+    for (const c of cells) {
+      c.el.classList.remove('is-lit');
+      c.due = now + random(2200, 12000);
+    }
+    if (enabled) tick();
+  }
+  new MutationObserver(sync).observe(home, { attributes:true, attributeFilter:['class'] });
+  document.addEventListener('visibilitychange', sync);
+  motion.addEventListener('change', sync);
+  sync();
+})();
