@@ -20,10 +20,9 @@ dialog.querySelector('.close').onclick=()=>dialog.close();
 dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
 dialog.addEventListener('wheel',e=>e.stopPropagation());
 
-// One timer services independent cell schedules. No work while away from Home.
+// One timer services independent cell schedules. Pause while the tab is hidden or reduced motion is enabled.
 (() => {
   const field = document.querySelector('.signal-field');
-  const home = field.closest('main');
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const cells = [...field.querySelectorAll('.signal-grid i')].map(el => ({ el, due: 0 }));
   const random = (min, max) => min + Math.random() * (max - min);
@@ -38,7 +37,7 @@ dialog.addEventListener('wheel',e=>e.stopPropagation());
     timer = setTimeout(tick, Math.ceil(Math.min(...cells.map(c => c.due)) - now));
   }
   function sync() {
-    const enabled = home.classList.contains('in_home') && !document.hidden && !motion.matches;
+    const enabled = !document.hidden && !motion.matches;
     if (enabled === running) return;
     running = enabled;
     clearTimeout(timer);
@@ -49,7 +48,6 @@ dialog.addEventListener('wheel',e=>e.stopPropagation());
     }
     if (enabled) tick();
   }
-  new MutationObserver(sync).observe(home, { attributes:true, attributeFilter:['class'] });
   document.addEventListener('visibilitychange', sync);
   motion.addEventListener('change', sync);
   sync();

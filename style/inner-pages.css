@@ -18,3 +18,26 @@
 .channels .socials{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;max-width:780px}.channels .socials span{display:flex;align-items:center;gap:18px;padding:16px 0;border-bottom:1px solid #8595b336}.channels .socials b{margin:0;width:38px;height:38px;display:grid;place-items:center;border:1px solid #506383;color:#cbb48a;font:13px monospace}
 main>#bottom{background:#090b10;border-top-color:#47557677}#bottom footer::before{content:"";display:block;width:4px;height:4px;background:#ba9e70;box-shadow:-7px 0 #364f80,7px 0 #243048;margin:0 auto 10px}
 @media(max-width:760px){.channels .socials{grid-template-columns:1fr}.leaf .inner{padding-top:65px}.schema{height:155px}.glass-card{margin-left:5px}}
+
+/* One viewport-sized atmosphere behind the scrolling track, including the cover. */
+.shared-atmosphere { position:fixed; inset:0; isolation:isolate; overflow:hidden; pointer-events:none; background:#08090c; }
+main > .scene, main > #bottom { background:transparent; }
+main > #bottom { border-top-color:transparent; }
+
+/* Only the destination's content animates; neither the background nor nav blinks. */
+@media (prefers-reduced-motion:no-preference) {
+  main.in_home > .signature > .signature-lockup,
+  main.in_profile > #profile > .inner,
+  main.in_project > #project > .inner,
+  main.in_dayLog > #dayLog > .inner,
+  main.in_contact > #contact > .inner,
+  main.in_bottom > #bottom > footer {
+    animation:section-arrival 520ms ease-out 220ms backwards;
+  }
+}
+@keyframes section-arrival {
+  0% { opacity:.12; }
+  38% { opacity:.73; }
+  51% { opacity:.48; }
+  100% { opacity:1; }
+}
