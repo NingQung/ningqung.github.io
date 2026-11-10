@@ -1,0 +1,20 @@
+/* Inner leaves share the signature palette, without changing Home or nav. */
+.leaf{--steel:#9baac6;--gold:#d9bd88;color:#ece4d4;background:radial-gradient(ellipse 64% 30% at 78% 58%,#1b315b66,transparent 88%),#090b10}
+.leaf h2{font:300 clamp(38px,4.8vw,72px)/1.2 "Microsoft JhengHei",sans-serif;position:relative;padding-bottom:19px;border-bottom:1px solid #7282a740}
+.leaf h2::after{content:"";position:absolute;width:5px;height:5px;bottom:-3px;right:0;background:var(--gold)}
+.leaf h2 span,.leaf .inner>.kicker{color:var(--steel)}.leaf .bars{background:linear-gradient(90deg,#cfb27a 0 4px,transparent 4px 7px,#425b8c 7px 11px,transparent 11px 14px,#263653 14px);height:4px;transform:none}
+.portrait-space{display:grid;place-items:center;aspect-ratio:1.6;max-height:34vh;position:relative;border:1px solid #55698777;background:linear-gradient(144deg,#192237,#0d1017 53%,#23324d)}
+.portrait-space span{font:300 clamp(44px,6vw,84px)/1 sans-serif;color:#97a9c477;letter-spacing:-.1em}
+.portrait-space::before,.schema::before{content:"";position:absolute;top:14px;left:14px;width:14px;height:14px;border-top:1px solid #bda87e;border-left:1px solid #bda87e}
+.leaf .records article{border:0;padding:0;min-width:0}.schema{position:relative;height:clamp(140px,22vh,230px);overflow:hidden;border:1px solid #65769766;background:radial-gradient(ellipse at 68% 50%,#334b75,transparent 70%),#141b28}
+.schema small,.note-glass small{font:10px/1.6 monospace;letter-spacing:.16em;color:#aab9d0}.schema small{position:absolute;top:12px;right:12px}
+.pillar i{position:absolute;left:47%;bottom:0;width:23px;height:70%;background:linear-gradient(90deg,#7f93af,#3a4b60 55%,#28364a 55%);transform:skewY(-8deg)}.pillar b{position:absolute;top:45%;left:43%;width:40px;height:18%;background:#111d31;border:1px solid #c2aa80}
+.spectrum i{position:absolute;inset:32% 15% 15%;background:linear-gradient(90deg,#425d93,#809bc2 45%,#ccb68f);clip-path:polygon(0 100%,0 87%,16% 70%,23% 44%,34% 65%,48% 8%,59% 50%,68% 29%,80% 65%,100% 83%,100% 100%)}.spectrum b{position:absolute;inset:28% 15% 15%;background:repeating-linear-gradient(90deg,transparent 0 3px,#17213477 3px 4px)}
+.tabs i{position:absolute;inset:32% 24% 12% 17%;border:1px solid #8199be;background:#182338;box-shadow:8px -7px #293751,9px -8px #7586a3}.tabs b{position:absolute;inset:44% 32% 20% 24%;background:repeating-linear-gradient(0deg,transparent 0 8px,#7488a680 8px 9px)}
+.glass-card,.note-glass,#record{background:#171e2cf5;border:1px solid #8192af55}
+@supports(backdrop-filter:blur(8px)){.glass-card,.note-glass,#record{background:#182133bd;backdrop-filter:blur(9px)}}
+.glass-card{position:relative;margin:-22px 0 0 8px;padding:16px clamp(12px,1.4vw,23px)}.glass-card p{margin-top:0}.leaf .records h3,.leaf .prose h3{font-family:"Microsoft JhengHei",sans-serif;color:#eee6d7}.leaf .records button{color:#dfc99e}.leaf .records button:hover{color:#151922;background:#dfc99e}
+.note-wrap{position:relative;width:min(100%,620px);padding:18px 0 0 18px}.note-wrap::before{content:"";position:absolute;top:0;left:0;width:44%;height:78%;background:linear-gradient(120deg,#3a537c9c,#1b293f55)}.note-glass{position:relative;padding:clamp(24px,4vw,60px)}.note-glass p{margin-top:22px;font-size:clamp(23px,3vw,40px);letter-spacing:.12em}
+.channels .socials{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;max-width:780px}.channels .socials span{display:flex;align-items:center;gap:18px;padding:16px 0;border-bottom:1px solid #8595b336}.channels .socials b{margin:0;width:38px;height:38px;display:grid;place-items:center;border:1px solid #506383;color:#cbb48a;font:13px monospace}
+main>#bottom{background:#090b10;border-top-color:#47557677}#bottom footer::before{content:"";display:block;width:4px;height:4px;background:#ba9e70;box-shadow:-7px 0 #364f80,7px 0 #243048;margin:0 auto 10px}
+@media(max-width:760px){.channels .socials{grid-template-columns:1fr}.leaf .inner{padding-top:65px}.schema{height:155px}.glass-card{margin-left:5px}}
