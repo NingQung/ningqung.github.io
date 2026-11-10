@@ -19,10 +19,23 @@
 main>#bottom{background:#090b10;border-top-color:#47557677}#bottom footer::before{content:"";display:block;width:4px;height:4px;background:#ba9e70;box-shadow:-7px 0 #364f80,7px 0 #243048;margin:0 auto 10px}
 @media(max-width:760px){.channels .socials{grid-template-columns:1fr}.leaf .inner{padding-top:65px}.schema{height:155px}.glass-card{margin-left:5px}}
 
-/* One viewport-sized atmosphere behind the scrolling track, including the cover. */
-.shared-atmosphere { position:fixed; inset:0; isolation:isolate; overflow:hidden; pointer-events:none; background:#08090c; }
+/* A single canvas travels with main. Both ribbons taper before their ends. */
+.ribbon-field { position:absolute; inset:0; overflow:hidden; pointer-events:none; background:#08090c; }
+.ribbon-field i { position:absolute; width:100%; }
+.ribbon-short {
+  top:-8vh; height:207vh; left:2%;
+  transform:skewX(-18deg); transform:skewX(atan2(-70vw,207vh));
+  background:radial-gradient(ellipse 13% 49% at 55% 50%,#38549750,transparent 99%),
+             radial-gradient(ellipse 32% 48% at 56% 50%,#1f306c68,transparent 100%);
+}
+.ribbon-long {
+  top:105vh; height:408vh; left:-1%;
+  transform:skewX(13deg); transform:skewX(atan2(78vw,408vh));
+  background:radial-gradient(ellipse 10% 49% at 51% 50%,#30467950,transparent 100%),
+             radial-gradient(ellipse 30% 50% at 54% 50%,#23396770,transparent 100%);
+}
 main > .scene, main > #bottom { background:transparent; }
-main > #bottom { border-top-color:transparent; }
+main > #bottom { position:relative; border-top-color:transparent; }
 
 /* Only the destination's content animates; neither the background nor nav blinks. */
 @media (prefers-reduced-motion:no-preference) {
