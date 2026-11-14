@@ -54,3 +54,41 @@ dialog.addEventListener('wheel',e=>e.stopPropagation());
   motion.addEventListener('change', sync);
   sync();
 })();
+
+// Wait for the actual track transition, not a guessed timeout/delay.
+// A generation token discards arrivals interrupted by another navigation.
+(() => {
+  const track = document.querySelector('main');
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const targets = [...track.querySelectorAll(':scope > section')].map(section => ({
+    state: `in_${section.id}`,
+    content: section.querySelector(':scope > .signature-lockup, :scope > .inner, :scope > footer')
+  }));
+  let previousState = track.className, generation = 0;
+  function clear() {
+    targets.forEach(({content}) => content?.classList.remove('arrival-pending', 'arrival-playing'));
+  }
+  function onNavigation() {
+    if (track.className === previousState) return;
+    previousState = track.className;
+    const ticket = ++generation;
+    clear();
+    const target = targets.find(({state}) => track.classList.contains(state))?.content;
+    if (!target || motion.matches) return;
+    target.classList.add('arrival-pending');
+    requestAnimationFrame(async () => {
+      // getAnimations flushes styles and includes an interrupted/replaced top transition.
+      const transitions = track.getAnimations().filter(animation => animation.transitionProperty === 'top');
+      await Promise.allSettled(transitions.map(animation => animation.finished));
+      if (ticket !== generation || motion.matches) return;
+      target.classList.replace('arrival-pending', 'arrival-playing');
+    });
+  }
+  new MutationObserver(onNavigation).observe(track, {attributes:true, attributeFilter:['class']});
+  motion.addEventListener('change', () => { ++generation; clear(); });
+  targets.forEach(({content}) => content?.addEventListener('animationend', event => {
+    if (event.target === content && event.animationName === 'section-arrival-slide') {
+      content.classList.remove('arrival-playing');
+    }
+  }));
+})();

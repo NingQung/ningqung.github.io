@@ -37,20 +37,38 @@ main>#bottom{background:#090b10;border-top-color:#47557677}#bottom footer::befor
 main > .scene, main > #bottom { background:transparent; }
 main > #bottom { position:relative; border-top-color:transparent; }
 
-/* Only the destination's content animates; neither the background nor nav blinks. */
-@media (prefers-reduced-motion:no-preference) {
-  main.in_home > .signature > .signature-lockup,
-  main.in_profile > #profile > .inner,
-  main.in_project > #project > .inner,
-  main.in_dayLog > #dayLog > .inner,
-  main.in_contact > #contact > .inner,
-  main.in_bottom > #bottom > footer {
-    animation:section-arrival 520ms ease-out 220ms backwards;
+/* Section arrival — starts only after main finishes its top transition.
+   Override these per section if desired; positive distance enters from the left.
+   Flicker timing lives in section-arrival-opacity below, independent of movement. */
+:root {
+  --arrival-distance: 18px;
+  --arrival-duration: 640ms;
+  --arrival-delay: 0ms; /* Additional pause AFTER the page is positioned. */
+  --arrival-easing: cubic-bezier(.22,.61,.36,1);
+  --arrival-opacity-start: 0;
+  --arrival-opacity-peak: .72;
+  --arrival-opacity-dip: .44;
+  --arrival-opacity-recover: .88;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .arrival-pending {
+    opacity: var(--arrival-opacity-start);
+    translate: calc(-1 * var(--arrival-distance)) 0;
+  }
+  .arrival-playing {
+    animation:
+      section-arrival-slide var(--arrival-duration) var(--arrival-easing) var(--arrival-delay) both,
+      section-arrival-opacity var(--arrival-duration) linear var(--arrival-delay) both;
   }
 }
-@keyframes section-arrival {
-  0% { opacity:.12; }
-  38% { opacity:.73; }
-  51% { opacity:.48; }
-  100% { opacity:1; }
+@keyframes section-arrival-slide {
+  from { translate: calc(-1 * var(--arrival-distance)) 0; }
+  to   { translate: 0 0; }
+}
+@keyframes section-arrival-opacity {
+  0%   { opacity: var(--arrival-opacity-start); }
+  26%  { opacity: var(--arrival-opacity-peak); }
+  34%  { opacity: var(--arrival-opacity-dip); }
+  52%  { opacity: var(--arrival-opacity-recover); }
+  100% { opacity: 1; }
 }
