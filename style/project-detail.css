@@ -1,0 +1,9 @@
+* { box-sizing:border-box; }
+body { margin:0; min-height:100vh; background:radial-gradient(ellipse at 70% 35%,#20345a70,transparent 65%),#08090c; color:#ece4d4; font-family:"Microsoft JhengHei",sans-serif; padding:clamp(28px,6vw,90px); }
+.back-link { color:#d9bd88; text-decoration:none; font-size:13px; }
+article { max-width:960px; margin:70px auto; }
+.kicker { font:11px monospace; color:#9baac6; letter-spacing:.16em; }
+h1 { font-size:clamp(32px,5vw,64px); font-weight:300; padding-bottom:24px; border-bottom:1px solid #8192af55; }
+.schema,.project-image { height:clamp(220px,40vh,460px); }
+.project-description { line-height:2; max-width:700px; margin-top:32px; color:#bfc2bd; }
+a:focus-visible { outline:1px solid #d9bd88; outline-offset:6px; }

@@ -5,21 +5,6 @@ pages.forEach((item, i) => {
   item.tabIndex = 0; item.setAttribute('role','button');
   item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(i); } });
 });
-const details = [
-  ['SOS 柱場景','一張以學生服少女與緊急求救柱為中心的 Blender 情境圖。求救柱獨立建模，再連結至主場景；面板貼圖以 Krita 繪製。'],
-  ['光譜渲染','從資訊工程專題出發，探索光的波長如何影響渲染結果。這裡將整理研究過程與圖像。'],
-  ['ningTab','為日常使用設計的自訂新分頁，探索書籤、工作表與配色如何共存。']
-];
-const dialog = document.querySelector('#record');
-document.querySelectorAll('[data-entry]').forEach(button => button.addEventListener('click', () => {
- const n=Number(button.dataset.entry);
- dialog.querySelector('.kicker').textContent='PROJECT RECORD / 00'+(n+1);
- dialog.querySelector('h3').textContent=details[n][0];dialog.querySelector('.record-body').textContent=details[n][1]; dialog.showModal();
-}));
-dialog.querySelector('.close').onclick=()=>dialog.close();
-dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
-dialog.addEventListener('wheel',e=>e.stopPropagation());
-
 // One timer services independent cell schedules. Pause while the tab is hidden or reduced motion is enabled.
 (() => {
   const field = document.querySelector('.signal-field');
@@ -64,7 +49,16 @@ dialog.addEventListener('wheel',e=>e.stopPropagation());
     state: `in_${section.id}`,
     content: section.querySelector(':scope > .signature-lockup, :scope > .inner, :scope > footer')
   }));
-  let previousState = track.className, generation = 0;
+  // 每個分頁各自記錄；sessionStorage 讓返回作品列表或重新整理也不重播。
+  const storageKey = 'ningweb:visited-sections:v1';
+  let visited;
+  try { visited = new Set(JSON.parse(sessionStorage.getItem(storageKey) || '[]')); }
+  catch { visited = new Set(); }
+  const remember = state => {
+    visited.add(state);
+    try { sessionStorage.setItem(storageKey, JSON.stringify([...visited])); } catch {}
+  };
+  let previousState = null, generation = 0;
   function clear() {
     targets.forEach(({content}) => content?.classList.remove('arrival-pending', 'arrival-playing'));
   }
@@ -74,16 +68,20 @@ dialog.addEventListener('wheel',e=>e.stopPropagation());
     const ticket = ++generation;
     clear();
     const target = targets.find(({state}) => track.classList.contains(state))?.content;
-    if (!target || motion.matches) return;
+    if (!target || visited.has(previousState)) return;
+    const state = previousState;
+    if (motion.matches) { remember(state); return; }
     target.classList.add('arrival-pending');
     requestAnimationFrame(async () => {
       // getAnimations flushes styles and includes an interrupted/replaced top transition.
       const transitions = track.getAnimations().filter(animation => animation.transitionProperty === 'top');
       await Promise.allSettled(transitions.map(animation => animation.finished));
       if (ticket !== generation || motion.matches) return;
+      remember(state); // 定位完成、真正開始播放才算進入；快速跳過不會消耗首次動畫。
       target.classList.replace('arrival-pending', 'arrival-playing');
     });
   }
+  onNavigation(); // 初次載入的首頁也適用。
   new MutationObserver(onNavigation).observe(track, {attributes:true, attributeFilter:['class']});
   motion.addEventListener('change', () => { ++generation; clear(); });
   targets.forEach(({content}) => content?.addEventListener('animationend', event => {
@@ -92,3 +90,6 @@ dialog.addEventListener('wheel',e=>e.stopPropagation());
     }
   }));
 })();
+
+// A detail page's back link restores the project section, without changing nav markup.
+if (location.hash === '#project') go(2);
